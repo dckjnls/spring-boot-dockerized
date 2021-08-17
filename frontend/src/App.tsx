@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import {PeopleList} from './components/PeopleList/PeopleList';
+import {PersonEty} from "./interface/PersonEty";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App: React.FC = () => {
+    const [people, setPeople] = useState<Array<PersonEty>>([]);
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8080'}/api/people`)
+            .then(res => res.json() as unknown as Array<PersonEty>)
+            .then((data: Array<PersonEty>) => setPeople(data));
+    }, []);
+
+
+    return (
+        <div className="App">
+            <PeopleList people={people}/>
+        </div>
+    );
 }
 
 export default App;

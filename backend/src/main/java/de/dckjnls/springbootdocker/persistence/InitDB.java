@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.stream.Stream;
+
 @Configuration
 @Slf4j
 public class InitDB {
@@ -14,8 +16,8 @@ public class InitDB {
     @Bean
     public CommandLineRunner createInitialDatabaseValues(PersonRepository personRepo) {
         return args -> {
-            PersonEty person1 = new PersonEty("Dack", "Janiels");
-            log.info("PRELOADING: {}", personRepo.save(person1));
+            Stream.of(new PersonEty("Dack", "Janiels"), new PersonEty("Crack", "Janiels"), new PersonEty("Jack", "Daniels"))
+                    .forEach(person -> log.info("PRELOADING: {}", personRepo.save(person)));
         };
     }
 }

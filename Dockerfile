@@ -4,7 +4,7 @@ RUN mkdir -p /build
 WORKDIR /build
 COPY pom.xml /build
 COPY src /build/src
-RUN mvn -f pom.xml clean package
+RUN mvn -f pom.xml clean package -P prod
 
 ### STAGE 2: Run ###
 FROM adoptopenjdk:16-jdk-openj9

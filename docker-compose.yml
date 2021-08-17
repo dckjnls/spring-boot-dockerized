@@ -3,13 +3,19 @@ version: '3.5'
 services:
   backend:
     container_name: backend
-    image: spring-boot-docker-backend
+    build: .
+    image: spring-boot-dockerized-backend:latest
+    networks:
+      - database_network
+    ports:
+      - "8080:8080"
 
-  postgres:
+  database:
+    container_name: database
     image: postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -17,10 +23,13 @@ services:
       - "5432:5432"
     networks:
       - postgres
+      - database_network
     restart: unless-stopped
 
 networks:
   postgres:
+    driver: bridge
+  database_network:
     driver: bridge
 
 volumes:

@@ -1,9 +1,18 @@
 version: '3.5'
 
 services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    image: spring-boot-dockerized-frontend:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
   backend:
     container_name: backend
-    build: .
+    build: ./backend
     image: spring-boot-dockerized-backend:latest
     networks:
       - database_network

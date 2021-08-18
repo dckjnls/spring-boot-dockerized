@@ -40,8 +40,11 @@ public class PersonService implements IPersonService {
 
     @Override
     public PersonEty readPersonById(Long id) throws DataNotFoundException {
+        if(id == null) throw new IllegalArgumentException("Parameter 'id' can't be `null`");
+
         Optional<PersonEty> person = personRepo.findById(id);
         if(person.isEmpty()) throw new DataNotFoundException();
+
         return person.get();
     }
 

@@ -1,12 +1,14 @@
 package de.dckjnls.springbootdocker.business.impl;
 
 import de.dckjnls.springbootdocker.business.IPersonService;
+import de.dckjnls.springbootdocker.exception.DataNotFoundException;
 import de.dckjnls.springbootdocker.persistence.entity.PersonEty;
 import de.dckjnls.springbootdocker.persistence.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonService implements IPersonService {
@@ -34,6 +36,13 @@ public class PersonService implements IPersonService {
     @Override
     public List<PersonEty> readAllPeopleByLastName(String lastName) {
         return personRepo.findAllByLastName(lastName);
+    }
+
+    @Override
+    public PersonEty readPersonById(Long id) throws DataNotFoundException {
+        Optional<PersonEty> person = personRepo.findById(id);
+        if(person.isEmpty()) throw new DataNotFoundException();
+        return person.get();
     }
 
     @Override
